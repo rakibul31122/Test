@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Form</title>
+</head>
+<body>
+    <h1>Order Form</h1>
+    <form id="orderForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="mobile">Mobile:</label>
+        <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}" required><br><br>
+
+        <label for="thana">Thana:</label>
+        <input type="text" id="thana" name="thana" required><br><br>
+
+        <label for="zela">Zela:</label>
+        <input type="text" id="zela" name="zela" required><br><br>
+
+        <label for="address">Address:</label>
+        <textarea id="address" name="address" required></textarea><br><br>
+
+        <label for="order">Order Details:</label>
+        <textarea id="order" name="order" required></textarea><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById("orderForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Form reload thamanor jonno
+
+            // Telegram bot details
+            const botToken = "YOUR_BOT_TOKEN"; // Apnar bot token ekhane din
+            const chatId = "YOUR_CHAT_ID";     // Apnar chat ID ekhane din
+
+            // Form field values
+            const name = document.getElementById("name").value;
+            const mobile = document.getElementById("mobile").value;
+            const thana = document.getElementById("thana").value;
+            const zela = document.getElementById("zela").value;
+            const address = document.getElementById("address").value;
+            const order = document.getElementById("order").value;
+
+            // Telegram message text
+            const text = `
+                New Order Received:
+                Name: ${name}
+                Mobile: ${mobile}
+                Thana: ${thana}
+                Zela: ${zela}
+                Address: ${address}
+                Order Details: ${order}
+            `;
+
+            // Send message to Telegram
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: text
+                })
+            }).then(response => {
+                if (response.ok) {
+                    alert("Order successfully sent!");
+                } else {
+                    alert("Failed to send order.");
+                }
+            }).catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred.");
+            });
+        });
+    </script>
+</body>
+          </html>
